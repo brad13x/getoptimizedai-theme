@@ -248,6 +248,11 @@ get_header();
       ?>
       <?php wp_nonce_field( 'audit_form_submit', 'audit_nonce' ); ?>
       <input type="hidden" name="action" value="audit_form_submit">
+      <input type="hidden" name="audit_source" value="<?php echo esc_attr( home_url( $_SERVER['REQUEST_URI'] ) ); ?>">
+      <!-- Honeypot: hidden from humans via CSS, bots fill it in -->
+      <div class="audit-hp" aria-hidden="true">
+        <input type="text" name="audit_website" value="" tabindex="-1" autocomplete="off">
+      </div>
 
       <div class="audit-form-row">
         <div class="audit-field">

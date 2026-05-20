@@ -66,9 +66,17 @@ function getoptimizedai_handle_audit_form() {
         wp_die( 'Security check failed.' );
     }
 
+    // Honeypot — bots fill this, humans leave it blank
+    if ( ! empty( $_POST['audit_website'] ) ) {
+        // Silent fail — redirect as if successful so bots don't know they were blocked
+        wp_redirect( add_query_arg( 'audit', 'success', wp_get_referer() ) );
+        exit;
+    }
+
     $name    = sanitize_text_field( $_POST['audit_name'] ?? '' );
     $email   = sanitize_email( $_POST['audit_email'] ?? '' );
     $message = sanitize_textarea_field( $_POST['audit_message'] ?? '' );
+    $source  = esc_url_raw( $_POST['audit_source'] ?? '' );
 
     if ( empty( $name ) || empty( $email ) ) {
         wp_redirect( add_query_arg( 'audit', 'error', wp_get_referer() ) );
@@ -77,7 +85,7 @@ function getoptimizedai_handle_audit_form() {
 
     $to      = 'brad@getoptimizedai.com';
     $subject = "New AI Audit Request from {$name}";
-    $body    = "Name: {$name}\nEmail: {$email}\n\nMessage:\n{$message}";
+    $body    = "Name: {$name}\nEmail: {$email}\n\nMessage:\n{$message}\n\n---\nSource Page: {$source}";
     $headers = [ 'Content-Type: text/plain; charset=UTF-8', "Reply-To: {$name} <{$email}>" ];
 
     wp_mail( $to, $subject, $body, $headers );

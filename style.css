@@ -1004,3 +1004,6 @@ body {
   .oc-hero { padding: 70px 24px 60px; }
   .oc-trust-row { gap: 16px; }
 }
+
+/* ── Honeypot ── */
+.audit-hp { position:absolute; left:-9999px; opacity:0; height:0; overflow:hidden; }
