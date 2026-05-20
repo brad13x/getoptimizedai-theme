@@ -643,6 +643,7 @@ body {
   text-align: left;
   backdrop-filter: blur(10px);
 }
+.audit-form input[type="hidden"] { display: none; }
 .audit-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
